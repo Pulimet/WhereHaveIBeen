@@ -1,4 +1,4 @@
-package net.alexandroid.where
+package net.alexandroid.where.ui
 
 import android.os.Bundle
 import android.view.Menu
@@ -10,6 +10,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
+import net.alexandroid.where.R
 import net.alexandroid.where.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {

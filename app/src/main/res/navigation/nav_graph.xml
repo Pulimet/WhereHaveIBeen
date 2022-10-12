@@ -3,26 +3,26 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/FirstFragment">
+    app:startDestination="@id/TutorialFragment">
 
     <fragment
-        android:id="@+id/FirstFragment"
-        android:name="net.alexandroid.where.ui.FirstFragment"
-        android:label="@string/first_fragment_label"
-        tools:layout="@layout/fragment_first">
+        android:id="@+id/TutorialFragment"
+        android:name="net.alexandroid.where.ui.tutorial.TutorialFragment"
+        android:label="@string/tutorial_fragment_label"
+        tools:layout="@layout/fragment_tutorial">
 
         <action
-            android:id="@+id/action_FirstFragment_to_SecondFragment"
-            app:destination="@id/SecondFragment" />
+            android:id="@+id/action_TutorialFragment_to_UploadFragment"
+            app:destination="@id/UploadFragment" />
     </fragment>
     <fragment
-        android:id="@+id/SecondFragment"
-        android:name="net.alexandroid.where.ui.SecondFragment"
-        android:label="@string/second_fragment_label"
-        tools:layout="@layout/fragment_second">
+        android:id="@+id/UploadFragment"
+        android:name="net.alexandroid.where.ui.upload.UploadFragment"
+        android:label="@string/upload_fragment_label"
+        tools:layout="@layout/fragment_upload">
 
         <action
-            android:id="@+id/action_SecondFragment_to_FirstFragment"
-            app:destination="@id/FirstFragment" />
+            android:id="@+id/action_UploadFragment_to_TutorialFragment"
+            app:destination="@id/TutorialFragment" />
     </fragment>
 </navigation>

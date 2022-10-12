@@ -15,7 +15,7 @@ class UploadFragment : Fragment(R.layout.fragment_upload) {
         super.onViewCreated(view, savedInstanceState)
 
         binding.buttonSecond.setOnClickListener {
-            findNavController().navigate(UploadFragmentDirections.actionUploadFragmentToTutorialFragment())
+            findNavController().navigate(UploadFragmentDirections.toMapFrament())
         }
     }
 }

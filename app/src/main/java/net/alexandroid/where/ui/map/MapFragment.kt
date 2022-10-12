@@ -1,22 +1,22 @@
-package net.alexandroid.where.ui.tutorial
+package net.alexandroid.where.ui.map
 
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import net.alexandroid.where.R
-import net.alexandroid.where.databinding.FragmentTutorialBinding
+import net.alexandroid.where.databinding.FragmentMapBinding
 import net.alexandroid.where.ui.binding.FragmentBinding
 
-class TutorialFragment : Fragment(R.layout.fragment_tutorial) {
+class MapFragment : Fragment(R.layout.fragment_map) {
 
-    private val binding by FragmentBinding(FragmentTutorialBinding::bind)
+    private val binding by FragmentBinding(FragmentMapBinding::bind)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         binding.buttonFirst.setOnClickListener {
-            findNavController().navigate(TutorialFragmentDirections.toUploadFragment())
+            findNavController().navigate(MapFragmentDirections.toListFragment())
         }
     }
 }

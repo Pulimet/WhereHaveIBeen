@@ -4,6 +4,8 @@
     <!-- Strings used for fragments for navigation -->
     <string name="tutorial_fragment_label">Tutorial Fragment</string>
     <string name="upload_fragment_label">Upload Fragment</string>
+    <string name="map_fragment_label">Map Fragment</string>
+    <string name="list_fragment_label">List Fragment</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
 

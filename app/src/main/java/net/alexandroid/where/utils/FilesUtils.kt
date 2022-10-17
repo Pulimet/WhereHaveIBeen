@@ -2,7 +2,7 @@ package net.alexandroid.where.utils
 
 import android.app.Activity
 import android.net.Uri
-import net.alexandroid.where.utils.logs.logE
+import net.alexandroid.where.utils.logs.logD
 import java.io.File
 import java.io.FileOutputStream
 import java.io.InputStream
@@ -10,7 +10,7 @@ import java.util.zip.ZipFile
 
 fun File.unzip() {
     val destinationDir = parentFile
-    logE("====> destinationDir: $destinationDir")
+    logD("====> destinationDir: $destinationDir")
 
     ZipFile(this).use { zipFile ->
         zipFile
@@ -27,10 +27,15 @@ fun File.unzip() {
     }
 }
 
+fun File.deleteIt() {
+    val isCompleted = delete()
+    logD("Is delete completed: $isCompleted")
+}
+
 fun Uri.copyUriContentToAppFiles(activity: Activity): File {
     val contentUri = this
     val selectedFile = File(activity.filesDir, "timeline.zip")
-    logE("SelectedFile: ${selectedFile.path}")
+    logD("SelectedFile: ${selectedFile.path}")
     val input = activity.contentResolver.openInputStream(contentUri)
     val out = FileOutputStream(selectedFile)
     copyInputStreamToFile(input, out)

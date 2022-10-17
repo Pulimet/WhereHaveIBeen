@@ -16,6 +16,7 @@ import net.alexandroid.where.databinding.FragmentUploadBinding
 import net.alexandroid.where.ui.binding.FragmentBinding
 import net.alexandroid.where.utils.PermissionUtils
 import net.alexandroid.where.utils.copyUriContentToAppFiles
+import net.alexandroid.where.utils.deleteIt
 import net.alexandroid.where.utils.logs.logD
 import net.alexandroid.where.utils.unzip
 
@@ -63,22 +64,17 @@ class UploadFragment : Fragment(R.layout.fragment_upload) {
     private fun onFileSelected(it: ActivityResult) {
         lifecycleScope.launch(Dispatchers.IO) {
             it.data?.data?.let { uri ->
-                copyAndUnzip(uri)
-                // Downloaded file copied here: files/timeline.zip
-                // Unzipped:
-                // 1. files/Takeout/Location History/Records.json
-                // 2. files/Takeout/Location History/
-                //      Semantic Location History/
-                //      20XX/
-                //      20XX_AUGUST.json
+                handleSelectedZipUri(uri)
             }
         }
     }
 
-    private fun copyAndUnzip(uri: Uri) {
+    private fun handleSelectedZipUri(uri: Uri) {
         logD("Selected URI: $uri")
-        uri.copyUriContentToAppFiles(requireActivity())
-            .unzip()
+        uri.copyUriContentToAppFiles(requireActivity()).apply {
+            unzip()
+            deleteIt()
+        }
         logD("Unzip completed")
     }
 

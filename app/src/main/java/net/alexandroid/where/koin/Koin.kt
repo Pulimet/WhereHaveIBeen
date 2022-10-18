@@ -1,6 +1,7 @@
 package net.alexandroid.where.koin
 
 import android.content.Context
+import net.alexandroid.where.ui.upload.UploadViewModel
 import net.alexandroid.where.utils.NetworkObjectsCreator
 import net.alexandroid.where.utils.logs.KoinLogs
 import net.alexandroid.where.utils.logs.OkHttpLogs
@@ -8,6 +9,7 @@ import net.alexandroid.where.utils.logs.logI
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
+import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 import kotlin.system.measureTimeMillis
 
@@ -24,6 +26,8 @@ object Koin {
     }
 
     private val appModule = module {
+        // ViewModels
+        singleOf(::UploadViewModel)
 
         // Room
         /*single {

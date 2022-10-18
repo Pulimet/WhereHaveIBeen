@@ -1,6 +1,6 @@
 package net.alexandroid.where.utils
 
-import android.app.Activity
+import android.content.Context
 import android.net.Uri
 import net.alexandroid.where.utils.logs.logD
 import java.io.File
@@ -32,11 +32,11 @@ fun File.deleteIt() {
     logD("Is delete completed: $isCompleted")
 }
 
-fun Uri.copyUriContentToAppFiles(activity: Activity): File {
+fun Uri.copyUriContentToAppFiles(context: Context): File {
     val contentUri = this
-    val selectedFile = File(activity.filesDir, "timeline.zip")
+    val selectedFile = File(context.filesDir, "timeline.zip")
     logD("SelectedFile: ${selectedFile.path}")
-    val input = activity.contentResolver.openInputStream(contentUri)
+    val input = context.contentResolver.openInputStream(contentUri)
     val out = FileOutputStream(selectedFile)
     copyInputStreamToFile(input, out)
     return selectedFile

@@ -12,6 +12,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
+import net.alexandroid.where.repo.LocationsRepo
 import net.alexandroid.where.utils.PermissionUtils
 import net.alexandroid.where.utils.copyUriContentToAppFiles
 import net.alexandroid.where.utils.deleteIt
@@ -19,7 +20,7 @@ import net.alexandroid.where.utils.logs.logD
 import net.alexandroid.where.utils.unzip
 import java.io.File
 
-class UploadViewModel : ViewModel() {
+class UploadViewModel(private val locationsRepo: LocationsRepo) : ViewModel() {
 
     private val _openFilePicker = MutableSharedFlow<Intent>()
     val openFilePicker = _openFilePicker.asSharedFlow()
@@ -55,16 +56,20 @@ class UploadViewModel : ViewModel() {
     }
 
     private fun openFilePicker() {
+        logD()
         val intent = Intent(Intent.ACTION_GET_CONTENT).apply {
             type = "*/*"
         }
-        _openFilePicker.tryEmit(intent)
+        viewModelScope.launch {
+            _openFilePicker.emit(intent)
+        }
     }
 
     fun onFileSelected(it: ActivityResult, context: Context) {
+        logD()
         viewModelScope.launch(Dispatchers.IO) {
             it.data?.data?.let { uri ->
-                // TODO handleSelectedZipUri(uri, context)
+                //handleSelectedZipUri(uri, context)
                 parseRecordsJson(context)
             }
         }
@@ -96,28 +101,31 @@ class UploadViewModel : ViewModel() {
                 handleLine(it)
             }
         }
+        logD("Parsing done")
     }
 
     private fun handleLine(it: String) {
+        val line = it.trim()
         when {
-            it.contains("latitudeE7") -> {
+            line.contains("latitudeE7") -> {
                 isReading = true
-                location += "{$it"
+                location += "{$line"
             }
 
-            it.contains("timestamp") -> {
+            line.contains("},") -> {
                 isReading = false
-                location += "$it}"
-                logD(location)
-                addLocationToDb(location)
+                location += "}"
+                //TODO  addLocationToDb(location) Cause OOM
                 location = ""
             }
 
-            isReading -> location += it
+            isReading -> location += line
         }
     }
 
     private fun addLocationToDb(location: String) {
-        // TODO
+        viewModelScope.launch(Dispatchers.IO) {
+            locationsRepo.add(location)
+        }
     }
 }

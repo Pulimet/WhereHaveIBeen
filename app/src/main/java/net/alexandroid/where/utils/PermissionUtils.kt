@@ -26,8 +26,10 @@ object PermissionUtils {
             isPermissionGranted(activity, permission) -> permissionGranted()
             activity.shouldShowRequestPermissionRationale(permission) ->
                 showDialogWithPermissionRationale(activity, requestPermissions, permission)
-
-            else -> requestPermissions.launch(arrayOf(permission))
+            else -> {
+                logD("Launch request permission")
+                requestPermissions.launch(arrayOf(permission))
+            }
         }
     }
 

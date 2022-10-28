@@ -1,6 +1,10 @@
 package net.alexandroid.where.koin
 
 import android.content.Context
+import androidx.room.Room
+import com.google.gson.Gson
+import net.alexandroid.where.db.LocationsDatabase
+import net.alexandroid.where.repo.LocationsRepo
 import net.alexandroid.where.ui.upload.UploadViewModel
 import net.alexandroid.where.utils.NetworkObjectsCreator
 import net.alexandroid.where.utils.logs.KoinLogs
@@ -26,16 +30,21 @@ object Koin {
     }
 
     private val appModule = module {
+        single { Gson() }
+
         // ViewModels
         singleOf(::UploadViewModel)
 
+        // Repos
+        singleOf(::LocationsRepo)
+
         // Room
-        /*single {
+        single {
             Room.databaseBuilder(
-                androidContext(), XxxDatabase::class.java, "xxx_database"
+                androidContext(), LocationsDatabase::class.java, "locations_database"
             ).build()
         }
-        single { get<XxxDatabase>().movieDao() }*/
+        single { get<LocationsDatabase>().locationDao() }
 
         // Network
         single<HttpLoggingInterceptor.Logger> { OkHttpLogs() }

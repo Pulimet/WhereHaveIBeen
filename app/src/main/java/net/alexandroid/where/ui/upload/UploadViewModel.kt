@@ -12,6 +12,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
+import net.alexandroid.where.model.Location
 import net.alexandroid.where.repo.LocationsRepo
 import net.alexandroid.where.utils.PermissionUtils
 import net.alexandroid.where.utils.copyUriContentToAppFiles
@@ -115,7 +116,7 @@ class UploadViewModel(private val locationsRepo: LocationsRepo) : ViewModel() {
             line.contains("},") -> {
                 isReading = false
                 location += "}"
-                //TODO  addLocationToDb(location) Cause OOM
+                handleJsonString(location)
                 location = ""
             }
 
@@ -123,9 +124,10 @@ class UploadViewModel(private val locationsRepo: LocationsRepo) : ViewModel() {
         }
     }
 
-    private fun addLocationToDb(location: String) {
+    private fun handleJsonString(location: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            locationsRepo.add(location)
+            val locationObject: Location = Location.convertStringToObject(location)
+            //locationsRepo.add(location)
         }
     }
 }

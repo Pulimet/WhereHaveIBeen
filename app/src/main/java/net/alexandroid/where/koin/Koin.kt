@@ -1,6 +1,7 @@
 package net.alexandroid.where.koin
 
 import android.content.Context
+import android.location.Geocoder
 import androidx.room.Room
 import com.google.gson.Gson
 import net.alexandroid.where.db.LocationsDatabase
@@ -15,6 +16,7 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
+import java.util.Locale
 import kotlin.system.measureTimeMillis
 
 object Koin {
@@ -31,6 +33,7 @@ object Koin {
 
     private val appModule = module {
         single { Gson() }
+        single { Geocoder(androidContext(), Locale.getDefault()) }
 
         // ViewModels
         singleOf(::UploadViewModel)

@@ -26,20 +26,35 @@ fun <T> Flow<T>.collectIt(lifecycleOwner: LifecycleOwner, function: (T) -> Unit)
     }
 }
 
+@Suppress("unused")
 fun ViewModel.emitSharedFlow(mutableSharedFlow: MutableSharedFlow<Unit>) {
     viewModelScope.launch { mutableSharedFlow.emit(Unit) }
 }
 
 // Set on click listener
+@Suppress("unused")
 fun View.OnClickListener.setOnClickListeners(vararg views: View) {
     views.forEach { it.setOnClickListener(this) }
 }
 
 // Toasts
+@Suppress("unused")
 fun Fragment.showToast(@StringRes resource: Int) {
     showToast(getString(resource))
 }
 
 fun Fragment.showToast(message: String) {
     Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+}
+
+// Location
+
+fun String.toDegreeFormat(): Double {
+    val dotIndex = if (this[0] == '-') {
+        if (length == 10) 3 else 2
+    } else {
+        if (length == 9) 2 else 1
+    }
+
+    return (this.substring(0, dotIndex) + "." + this.substring(dotIndex)).toDouble()
 }

@@ -8,7 +8,6 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.asCoroutineDispatcher
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -21,15 +20,12 @@ import net.alexandroid.where.utils.ParsingUtils
 import net.alexandroid.where.utils.PermissionUtils
 import net.alexandroid.where.utils.logs.logD
 import java.io.File
-import java.util.concurrent.Executors
 
 class UploadViewModel(private val locationUtils: LocationUtils) : ViewModel() {
 
     private val _openFilePicker = MutableSharedFlow<Intent>()
     val openFilePicker = _openFilePicker.asSharedFlow()
     private val channel = Channel<LatLng>()
-
-    private val singleThreadDispatcher = Executors.newSingleThreadExecutor().asCoroutineDispatcher()
 
     fun onButtonClick(
         activity: FragmentActivity, requestPermissions: ActivityResultLauncher<Array<String>>
@@ -66,7 +62,7 @@ class UploadViewModel(private val locationUtils: LocationUtils) : ViewModel() {
 
     fun onFileSelected(it: ActivityResult, context: Context) {
         logD()
-        viewModelScope.launch(singleThreadDispatcher) {
+        viewModelScope.launch(Dispatchers.IO) {
             it.data?.data?.let { uri ->
                 FilesUtils.handleSelectedZipUri(uri, context)
                 listenForParsedData()

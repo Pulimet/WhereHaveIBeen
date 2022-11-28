@@ -8,6 +8,22 @@ import java.io.FileOutputStream
 import java.io.InputStream
 import java.util.zip.ZipFile
 
+object FilesUtils {
+    fun handleSelectedZipUri(uri: Uri, context: Context) {
+        logD("Selected URI: $uri")
+        // Downloaded file copied to: files/timeline.zip
+        uri.copyUriContentToAppFiles(context).apply {
+            // Unzipped to:
+            // 1. files/Takeout/Location History/Records.json
+            // 2. files/Takeout/Location History/Semantic Location History/
+            //    20XX/20XX_AUGUST.json
+            unzip()
+            deleteIt()
+        }
+        logD("Unzip completed")
+    }
+}
+
 fun File.unzip() {
     val destinationDir = parentFile
     logD("====> destinationDir: $destinationDir")

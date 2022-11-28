@@ -7,6 +7,7 @@ import com.google.gson.Gson
 import net.alexandroid.where.db.LocationsDatabase
 import net.alexandroid.where.repo.LocationsRepo
 import net.alexandroid.where.ui.upload.UploadViewModel
+import net.alexandroid.where.utils.LocationUtils
 import net.alexandroid.where.utils.NetworkObjectsCreator
 import net.alexandroid.where.utils.logs.KoinLogs
 import net.alexandroid.where.utils.logs.OkHttpLogs
@@ -34,6 +35,7 @@ object Koin {
     private val appModule = module {
         single { Gson() }
         single { Geocoder(androidContext(), Locale.getDefault()) }
+        singleOf(::LocationUtils)
 
         // ViewModels
         singleOf(::UploadViewModel)

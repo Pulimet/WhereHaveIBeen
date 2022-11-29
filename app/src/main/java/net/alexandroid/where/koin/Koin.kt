@@ -6,6 +6,7 @@ import androidx.room.Room
 import com.google.gson.Gson
 import net.alexandroid.where.db.LocationsDatabase
 import net.alexandroid.where.repo.LocationsRepo
+import net.alexandroid.where.ui.map.MapViewModel
 import net.alexandroid.where.ui.upload.UploadViewModel
 import net.alexandroid.where.utils.LocationUtils
 import net.alexandroid.where.utils.NetworkObjectsCreator
@@ -39,6 +40,7 @@ object Koin {
 
         // ViewModels
         singleOf(::UploadViewModel)
+        singleOf(::MapViewModel)
 
         // Repos
         singleOf(::LocationsRepo)

@@ -5,6 +5,9 @@ import net.alexandroid.where.model.LatLngDb
 import net.alexandroid.where.utils.logs.logE
 
 class LocationsRepo(private val locationDao: LocationDao) {
+
+    fun getLocations() = locationDao.getLocations()
+
     suspend fun add(latLng: LatLngDb) {
         try {
             locationDao.insert(latLng)

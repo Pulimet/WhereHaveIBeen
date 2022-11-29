@@ -6,6 +6,7 @@ import android.view.View
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import net.alexandroid.where.R
 import net.alexandroid.where.databinding.FragmentUploadBinding
 import net.alexandroid.where.ui.binding.FragmentBinding
@@ -38,8 +39,15 @@ class UploadFragment : Fragment(R.layout.fragment_upload), View.OnClickListener 
     }
 
     private fun observeViewModel() {
-        viewModel.openFilePicker.collectIt(viewLifecycleOwner) {
-            resultLauncher.launch(it)
+        viewModel.apply {
+            openFilePicker.collectIt(viewLifecycleOwner) { resultLauncher.launch(it) }
+            isLoading.collectIt(viewLifecycleOwner) { isLoading ->
+                binding.buttonSecond.isEnabled = !isLoading
+                binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+            }
+            navigateToMap.collectIt(viewLifecycleOwner) {
+                findNavController().navigate(UploadFragmentDirections.toMapFrament())
+            }
         }
     }
 

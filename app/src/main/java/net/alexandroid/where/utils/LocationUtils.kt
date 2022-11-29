@@ -9,6 +9,8 @@ import kotlin.math.roundToInt
 class LocationUtils(private val geocoder: Geocoder) {
 
     private val setOfCountries = mutableSetOf<String>()
+    val countries = setOfCountries as Set<String>
+
     private val setOfCoordinates = mutableSetOf<String>()
 
     @Suppress("DEPRECATION")

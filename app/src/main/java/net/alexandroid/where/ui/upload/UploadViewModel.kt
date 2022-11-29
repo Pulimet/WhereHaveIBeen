@@ -10,7 +10,9 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import net.alexandroid.where.model.LatLng
@@ -25,7 +27,16 @@ class UploadViewModel(private val locationUtils: LocationUtils) : ViewModel() {
 
     private val _openFilePicker = MutableSharedFlow<Intent>()
     val openFilePicker = _openFilePicker.asSharedFlow()
+    private val _isLoading = MutableStateFlow(false)
+    val isLoading = _isLoading.asStateFlow()
+
+    private val _navigateToMap = MutableSharedFlow<Unit>()
+    val navigateToMap = _navigateToMap.asSharedFlow()
+
     private val channel = Channel<LatLng>()
+
+    private var counterTotalLocations = 0
+    private var counterAccurateLocations = 0
 
     fun onButtonClick(
         activity: FragmentActivity, requestPermissions: ActivityResultLauncher<Array<String>>
@@ -46,7 +57,9 @@ class UploadViewModel(private val locationUtils: LocationUtils) : ViewModel() {
         activity: FragmentActivity, requestPermissions: ActivityResultLauncher<Array<String>>
     ) {
         PermissionUtils.checkPermissionFlow(
-            activity, requestPermissions, PermissionUtils.STORAGE
+            activity,
+            requestPermissions,
+            PermissionUtils.STORAGE
         ) { openFilePicker() }
     }
 
@@ -63,6 +76,7 @@ class UploadViewModel(private val locationUtils: LocationUtils) : ViewModel() {
     fun onFileSelected(it: ActivityResult, context: Context) {
         logD()
         viewModelScope.launch(Dispatchers.IO) {
+            _isLoading.emit(true)
             it.data?.data?.let { uri ->
                 FilesUtils.handleSelectedZipUri(uri, context)
                 listenForParsedData()
@@ -94,11 +108,21 @@ class UploadViewModel(private val locationUtils: LocationUtils) : ViewModel() {
             }
         }
         logD("Parsing done")
+        logD("counterTotalLocations: $counterTotalLocations")
+        logD("counterAccurateLocations: $counterAccurateLocations")
+        logD("Total countries: ${locationUtils.countries.size}")
+        logD("Countries: ${locationUtils.countries}")
+        viewModelScope.launch {
+            _isLoading.emit(false)
+            _navigateToMap.emit(Unit)
+        }
     }
 
     private fun handleCoordinates(latLng: LatLng) {
+        counterTotalLocations++
         viewModelScope.launch(Dispatchers.Default) {
             if (latLng.accuracy < 100) {
+                counterAccurateLocations++
                 channel.send(latLng)
             }
         }

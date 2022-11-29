@@ -5,13 +5,13 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import kotlinx.coroutines.flow.Flow
-import net.alexandroid.where.model.Location
+import net.alexandroid.where.model.LatLngDb
 
 @Dao
 interface LocationDao {
     @Query("SELECT * from locations")
-    fun getLocations(): Flow<List<Location>>
+    fun getLocations(): Flow<List<LatLngDb>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(location: Location)
+    suspend fun insert(location: LatLngDb)
 }

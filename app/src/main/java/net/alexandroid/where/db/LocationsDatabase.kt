@@ -2,9 +2,9 @@ package net.alexandroid.where.db
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import net.alexandroid.where.model.Location
+import net.alexandroid.where.model.LatLngDb
 
-@Database(entities = [Location::class], version = 1, exportSchema = true)
+@Database(entities = [LatLngDb::class], version = 1, exportSchema = true)
 abstract class LocationsDatabase : RoomDatabase() {
     abstract fun locationDao(): LocationDao
 }

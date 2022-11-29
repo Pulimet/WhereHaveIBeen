@@ -7,6 +7,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -16,6 +17,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import net.alexandroid.where.model.LatLng
+import net.alexandroid.where.repo.LocationsRepo
 import net.alexandroid.where.utils.FilesUtils
 import net.alexandroid.where.utils.LocationUtils
 import net.alexandroid.where.utils.ParsingUtils
@@ -23,7 +25,10 @@ import net.alexandroid.where.utils.PermissionUtils
 import net.alexandroid.where.utils.logs.logD
 import java.io.File
 
-class UploadViewModel(private val locationUtils: LocationUtils) : ViewModel() {
+class UploadViewModel(
+    private val locationUtils: LocationUtils,
+    private val locationsRepo: LocationsRepo
+) : ViewModel() {
 
     private val _openFilePicker = MutableSharedFlow<Intent>()
     val openFilePicker = _openFilePicker.asSharedFlow()
@@ -85,14 +90,6 @@ class UploadViewModel(private val locationUtils: LocationUtils) : ViewModel() {
         }
     }
 
-    private fun listenForParsedData() {
-        viewModelScope.launch(Dispatchers.Default) {
-            channel.receiveAsFlow().collect {
-                locationUtils.getCountryByCoordinates(it)
-            }
-        }
-    }
-
     private fun parseRecordsJson(context: Context) {
         // unZippedFilesFolder: "files"
         // files/Takeout/Location History/Records.json
@@ -107,6 +104,10 @@ class UploadViewModel(private val locationUtils: LocationUtils) : ViewModel() {
                 }
             }
         }
+        onParsingDone()
+    }
+
+    private fun onParsingDone() {
         logD("Parsing done")
         logD("counterTotalLocations: $counterTotalLocations")
         logD("counterAccurateLocations: $counterAccurateLocations")
@@ -120,11 +121,25 @@ class UploadViewModel(private val locationUtils: LocationUtils) : ViewModel() {
 
     private fun handleCoordinates(latLng: LatLng) {
         counterTotalLocations++
-        viewModelScope.launch(Dispatchers.Default) {
-            if (latLng.accuracy < 100) {
+        if (latLng.accuracy < 100) {
+            viewModelScope.launch(Dispatchers.Default) {
                 counterAccurateLocations++
                 channel.send(latLng)
             }
+        }
+    }
+
+    private fun listenForParsedData() {
+        viewModelScope.launch(Dispatchers.Default) {
+            channel.receiveAsFlow().collect {
+                handleLatLng(it)
+            }
+        }
+    }
+
+    private fun CoroutineScope.handleLatLng(latLng: LatLng) {
+        locationUtils.getCountryByCoordinates(latLng)?.let {
+            launch(Dispatchers.IO) { locationsRepo.add(it) }
         }
     }
 }

@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "1026901558098",
+    "project_id": "udacity-nanodegree-alexey",
+    "storage_bucket": "udacity-nanodegree-alexey.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1026901558098:android:5859d87badcf044acaf08b",
+        "android_client_info": {
+          "package_name": "net.alexandroid.where"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1026901558098-rpbbpe53207oanu32stvvurc0h103qmk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "net.alexandroid.where",
+            "certificate_hash": "c4da5d712a101d07324e94053ab6185432e03611"
+          }
+        },
+        {
+          "client_id": "1026901558098-a9d25afrhm04b78ss2a8aj52e5cflmmr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB3gh3OFjXqO2jLUs9mt_sM_PEkjuOuyfI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1026901558098-a9d25afrhm04b78ss2a8aj52e5cflmmr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

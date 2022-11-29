@@ -10,6 +10,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -46,6 +47,10 @@ class UploadViewModel(
     fun onButtonClick(
         activity: FragmentActivity, requestPermissions: ActivityResultLauncher<Array<String>>
     ) {
+        viewModelScope.launch {
+            delay(1000)
+            _navigateToMap.emit(Unit)
+        }
         checkPermissionsFlow(activity, requestPermissions)
     }
 

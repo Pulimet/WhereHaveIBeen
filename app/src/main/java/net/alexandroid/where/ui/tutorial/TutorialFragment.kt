@@ -22,6 +22,10 @@ class TutorialFragment : Fragment(R.layout.fragment_tutorial) {
                 else -> binding.btnNextStep.setText(R.string.next)
             }
         }
+
+        override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+            binding.motionLayout.progress = positionOffset
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

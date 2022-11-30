@@ -14,7 +14,7 @@ class ListFragment : Fragment(R.layout.fragment_list) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.buttonFirst.setOnClickListener {
+        binding.btnNext.setOnClickListener {
             //findNavController().navigate(TutorialFragmentDirections.actionTutorialFragmentToUploadFragment())
         }
     }

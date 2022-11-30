@@ -10,7 +10,6 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -19,6 +18,7 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import net.alexandroid.where.model.LatLng
 import net.alexandroid.where.repo.LocationsRepo
+import net.alexandroid.where.utils.FilesUtils
 import net.alexandroid.where.utils.LocationUtils
 import net.alexandroid.where.utils.ParsingUtils
 import net.alexandroid.where.utils.PermissionUtils
@@ -46,11 +46,12 @@ class UploadViewModel(
     fun onButtonClick(
         activity: FragmentActivity, requestPermissions: ActivityResultLauncher<Array<String>>
     ) {
+        /* // Skip for debugging purposes
         viewModelScope.launch {
             delay(1000)
             _navigateToMap.emit(Unit)
-        }
-        // TODOcheckPermissionsFlow(activity, requestPermissions)
+        }*/
+        checkPermissionsFlow(activity, requestPermissions)
     }
 
     fun onPermissionsResult(
@@ -87,7 +88,7 @@ class UploadViewModel(
         viewModelScope.launch(Dispatchers.IO) {
             _isLoading.emit(true)
             it.data?.data?.let { uri ->
-                // TODO FilesUtils.handleSelectedZipUri(uri, context)
+                FilesUtils.handleSelectedZipUri(uri, context)
                 listenForParsedData()
                 parseRecordsJson(context)
             }

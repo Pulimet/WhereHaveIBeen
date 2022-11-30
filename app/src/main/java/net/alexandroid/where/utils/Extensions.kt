@@ -1,8 +1,12 @@
 package net.alexandroid.where.utils
 
+import android.annotation.SuppressLint
+import android.content.Context
+import android.graphics.drawable.Drawable
 import android.view.View
 import android.widget.Toast
 import androidx.annotation.StringRes
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
@@ -57,4 +61,24 @@ fun String.toDegreeFormat(): Double {
     }
 
     return (this.substring(0, dotIndex) + "." + this.substring(dotIndex)).toDouble()
+}
+
+// Resources
+@SuppressLint("DiscouragedApi")
+fun Context.getStringResourceByName(name: String): String {
+    val resId = resources.getIdentifier(name, "string", packageName)
+    return getString(resId)
+}
+
+@Suppress("unused")
+@SuppressLint("DiscouragedApi")
+fun Context.getColorResourceByName(name: String): Int {
+    val resId = resources.getIdentifier(name, "color", packageName)
+    return getColor(resId)
+}
+
+@SuppressLint("DiscouragedApi")
+fun Context.getDrawableResourceByName(name: String): Drawable? {
+    val resId = resources.getIdentifier(name, "drawable", packageName)
+    return AppCompatResources.getDrawable(this, resId)
 }

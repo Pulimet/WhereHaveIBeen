@@ -33,4 +33,5 @@
     Lets do it!
     </string>
     <string name="desc_icon">Icon</string>
+    <string name="btn_upload">Upload ZIP file and we will start getting your locations soon.</string>
 </resources>

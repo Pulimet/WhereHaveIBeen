@@ -38,6 +38,13 @@ class UploadViewModel(
     private val _navigateToMap = MutableSharedFlow<Unit>()
     val navigateToMap = _navigateToMap.asSharedFlow()
 
+    private val _statusMessage = MutableSharedFlow<String>()
+    val statusMessage = _statusMessage.asSharedFlow()
+
+    private fun updateStatusMessage(message: String) {
+        viewModelScope.launch { _statusMessage.emit(message) }
+    }
+
     private val channel = Channel<LatLng>()
 
     private var counterTotalLocations = 0
@@ -66,11 +73,15 @@ class UploadViewModel(
     private fun checkPermissionsFlow(
         activity: FragmentActivity, requestPermissions: ActivityResultLauncher<Array<String>>
     ) {
+        updateStatusMessage("Requesting permissions... ")
         PermissionUtils.checkPermissionFlow(
             activity,
             requestPermissions,
             PermissionUtils.STORAGE
-        ) { openFilePicker() }
+        ) {
+            updateStatusMessage("Permissions granted!\n\n")
+            openFilePicker()
+        }
     }
 
     private fun openFilePicker() {
@@ -85,10 +96,13 @@ class UploadViewModel(
 
     fun onFileSelected(it: ActivityResult, context: Context) {
         logD()
+        updateStatusMessage("Zip file selected. Processing... \n")
         viewModelScope.launch(Dispatchers.IO) {
             _isLoading.emit(true)
             it.data?.data?.let { uri ->
-                FilesUtils.handleSelectedZipUri(uri, context)
+                FilesUtils.handleSelectedZipUri(uri, context) {
+                    updateStatusMessage(it)
+                }
                 listenForParsedData()
                 parseRecordsJson(context)
             }
@@ -96,6 +110,7 @@ class UploadViewModel(
     }
 
     private fun parseRecordsJson(context: Context) {
+        updateStatusMessage("Parsing JSON file....\n\n")
         // unZippedFilesFolder: "files"
         // files/Takeout/Location History/Records.json
         val selectedFile = File(context.filesDir, "Takeout/Location History/Records.json")
@@ -119,6 +134,11 @@ class UploadViewModel(
         logD("counterAccurateLocations: $counterAccurateLocations")
         logD("Total countries: ${locationUtils.countries.size}")
         logD("Countries: ${locationUtils.countries}")
+
+        updateStatusMessage("\n\nParsing done!\n\n")
+        updateStatusMessage("Total locations checked: $counterTotalLocations\n")
+        updateStatusMessage("Total countries visited: ${locationUtils.countries.size}")
+
         viewModelScope.launch {
             _isLoading.emit(false)
             _navigateToMap.emit(Unit)
@@ -145,7 +165,10 @@ class UploadViewModel(
 
     private fun CoroutineScope.handleLatLng(latLng: LatLng) {
         locationUtils.getCountryByCoordinates(latLng)?.let {
-            launch(Dispatchers.IO) { locationsRepo.add(it) }
+            launch(Dispatchers.IO) {
+                updateStatusMessage("${it.countryName}, ")
+                locationsRepo.add(it)
+            }
         }
     }
 }

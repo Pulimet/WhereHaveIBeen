@@ -1,5 +1,6 @@
 package net.alexandroid.where.ui.upload
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -35,18 +36,22 @@ class UploadFragment : Fragment(R.layout.fragment_upload), View.OnClickListener 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         observeViewModel()
-        binding.buttonSecond.setOnClickListener(this)
+        binding.btnUpload.setOnClickListener(this)
     }
 
+    @SuppressLint("SetTextI18n")
     private fun observeViewModel() {
         viewModel.apply {
             openFilePicker.collectIt(viewLifecycleOwner) { resultLauncher.launch(it) }
             isLoading.collectIt(viewLifecycleOwner) { isLoading ->
-                binding.buttonSecond.isEnabled = !isLoading
+                binding.btnUpload.isEnabled = !isLoading
                 binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
             }
             navigateToMap.collectIt(viewLifecycleOwner) {
                 findNavController().navigate(UploadFragmentDirections.toMapFrament())
+            }
+            statusMessage.collectIt(viewLifecycleOwner) {
+                binding.tvResults.text = "${binding.tvResults.text}$it"
             }
         }
     }
@@ -54,7 +59,7 @@ class UploadFragment : Fragment(R.layout.fragment_upload), View.OnClickListener 
     // View.OnClickListener
     override fun onClick(v: View?) {
         when (v?.id) {
-            R.id.button_second -> viewModel.onButtonClick(requireActivity(), requestPermissions)
+            R.id.btnUpload -> viewModel.onButtonClick(requireActivity(), requestPermissions)
         }
     }
 }

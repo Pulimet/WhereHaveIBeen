@@ -9,18 +9,21 @@ import java.io.InputStream
 import java.util.zip.ZipFile
 
 object FilesUtils {
-    fun handleSelectedZipUri(uri: Uri, context: Context) {
+    fun handleSelectedZipUri(uri: Uri, context: Context, updateStatus: (status: String) -> Unit) {
         logD("Selected URI: $uri")
         // Downloaded file copied to: files/timeline.zip
         uri.copyUriContentToAppFiles(context).apply {
+            updateStatus("File uploaded! \n")
             // Unzipped to:
             // 1. files/Takeout/Location History/Records.json
             // 2. files/Takeout/Location History/Semantic Location History/
             //    20XX/20XX_AUGUST.json
             unzip()
+            updateStatus("File unzipped! \n")
             deleteIt()
+            updateStatus("Uploaded Zip file deleted. \n")
         }
-        logD("Unzip completed")
+        logD("Unzip completed \n\n")
     }
 }
 

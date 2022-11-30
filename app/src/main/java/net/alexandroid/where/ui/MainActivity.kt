@@ -1,8 +1,6 @@
 package net.alexandroid.where.ui
 
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
 import androidx.navigation.NavController
@@ -41,15 +39,15 @@ class MainActivity : AppCompatActivity() {
     }
 
     // Menu
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.menu_main, menu)
-        return true
-    }
+    /*    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+            menuInflater.inflate(R.menu.menu_main, menu)
+            return true
+        }
 
-    override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
-        R.id.action_settings -> true
-        else -> super.onOptionsItemSelected(item)
-    }
+        override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
+            R.id.action_settings -> true
+            else -> super.onOptionsItemSelected(item)
+        }*/
 
     // Navigation
     override fun onSupportNavigateUp() =

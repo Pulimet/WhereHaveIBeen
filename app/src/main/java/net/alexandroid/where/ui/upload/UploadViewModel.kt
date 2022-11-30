@@ -87,7 +87,7 @@ class UploadViewModel(
         viewModelScope.launch(Dispatchers.IO) {
             _isLoading.emit(true)
             it.data?.data?.let { uri ->
-                FilesUtils.handleSelectedZipUri(uri, context)
+                // TODO FilesUtils.handleSelectedZipUri(uri, context)
                 listenForParsedData()
                 parseRecordsJson(context)
             }
@@ -126,7 +126,7 @@ class UploadViewModel(
 
     private fun handleCoordinates(latLng: LatLng) {
         counterTotalLocations++
-        if (latLng.accuracy < 100) {
+        if (latLng.accuracy < 1000 && !latLng.src.equals("WIFI", ignoreCase = true)) {
             viewModelScope.launch(Dispatchers.Default) {
                 counterAccurateLocations++
                 channel.send(latLng)

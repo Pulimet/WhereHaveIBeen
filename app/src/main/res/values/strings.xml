@@ -9,6 +9,7 @@
     <string name="next">Next</string>
     <string name="previous">Previous</string>
     <string name="storage_rationale">We need storage permission to be able saving and parsing timeline data.</string>
+    <string name="location_rationale">We need the location permission to be able showing your current location</string>
 
     <string name="lorem_ipsum">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam in scelerisque sem. Mauris

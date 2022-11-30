@@ -14,6 +14,7 @@ import net.alexandroid.where.utils.logs.logW
 object PermissionUtils {
 
     const val STORAGE = Manifest.permission.READ_EXTERNAL_STORAGE
+    const val LOCATION = Manifest.permission.ACCESS_FINE_LOCATION
 
     fun checkPermissionFlow(
         activity: Activity,
@@ -26,6 +27,7 @@ object PermissionUtils {
             isPermissionGranted(activity, permission) -> permissionGranted()
             activity.shouldShowRequestPermissionRationale(permission) ->
                 showDialogWithPermissionRationale(activity, requestPermissions, permission)
+
             else -> {
                 logD("Launch request permission")
                 requestPermissions.launch(arrayOf(permission))
@@ -58,6 +60,7 @@ object PermissionUtils {
     private fun getRationaleString(activity: Activity, permission: String): String =
         when (permission) {
             STORAGE -> activity.getString(R.string.storage_rationale)
+            LOCATION -> activity.getString(R.string.location_rationale)
             else -> ""
         }
 

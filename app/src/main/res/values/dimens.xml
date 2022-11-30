@@ -1,4 +1,17 @@
 <resources>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="progress_bar">80dp</dimen>
+    <dimen name="slide_title_padding">16dp</dimen>
+    <dimen name="title_size">24sp</dimen>
+    <dimen name="icon_width">150dp</dimen>
+    <dimen name="slide_instructions_padding">16dp</dimen>
+    <dimen name="instructions_text_size">20sp</dimen>
+    <dimen name="upload_icon_margin_top">32dp</dimen>
+    <dimen name="upload_instructions_margin">16dp</dimen>
+    <dimen name="upload_results_margin">16dp</dimen>
+    <dimen name="upload_progress_bar_top_margin">16dp</dimen>
+    <dimen name="tutorial_btn_width">140dp</dimen>
+    <dimen name="tutorial_btn_margin_top">12dp</dimen>
+    <dimen name="tutorial_btn_margin_bottom">54dp</dimen>
+    <dimen name="list_fragment_padding">16dp</dimen>
 </resources>

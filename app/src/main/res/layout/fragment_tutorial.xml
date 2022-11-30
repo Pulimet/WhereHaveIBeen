@@ -19,10 +19,10 @@
 
     <Button
         android:id="@+id/btnNextStep"
-        android:layout_width="140dp"
+        android:layout_width="@dimen/tutorial_btn_width"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:layout_marginBottom="54dp"
+        android:layout_marginTop="@dimen/tutorial_btn_margin_top"
+        android:layout_marginBottom="@dimen/tutorial_btn_margin_bottom"
         android:text="@string/next"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

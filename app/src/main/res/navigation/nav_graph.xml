@@ -13,6 +13,11 @@
         <action
             android:id="@+id/toUploadFragment"
             app:destination="@id/uploadFragment" />
+        <action
+            android:id="@+id/action_tutorialFragment_to_mapFragment"
+            app:destination="@id/mapFragment"
+            app:popUpTo="@id/nav_graph"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/uploadFragment"
@@ -31,7 +36,9 @@
         tools:layout="@layout/fragment_map">
         <action
             android:id="@+id/toListFragment"
-            app:destination="@id/listFragment" />
+            app:destination="@id/listFragment"
+            app:popUpTo="@id/nav_graph"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/listFragment"

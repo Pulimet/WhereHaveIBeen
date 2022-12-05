@@ -34,20 +34,9 @@ class MainActivity : AppCompatActivity() {
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment_content_main) as NavHostFragment
         navController = navHostFragment.navController
-        appBarConfiguration = AppBarConfiguration(navController.graph)
+        appBarConfiguration = AppBarConfiguration(setOf(R.id.tutorialFragment, R.id.mapFragment))
         setupActionBarWithNavController(navController, appBarConfiguration)
     }
-
-    // Menu
-    /*    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-            menuInflater.inflate(R.menu.menu_main, menu)
-            return true
-        }
-
-        override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
-            R.id.action_settings -> true
-            else -> super.onOptionsItemSelected(item)
-        }*/
 
     // Navigation
     override fun onSupportNavigateUp() =

@@ -8,10 +8,14 @@ import androidx.viewpager2.widget.ViewPager2
 import net.alexandroid.where.R
 import net.alexandroid.where.databinding.FragmentTutorialBinding
 import net.alexandroid.where.ui.binding.FragmentBinding
+import net.alexandroid.where.utils.collectIt
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class TutorialFragment : Fragment(R.layout.fragment_tutorial) {
 
     private val binding by FragmentBinding(FragmentTutorialBinding::bind)
+    private val viewModel: TutorialViewModel by viewModel()
+
     private var selectedPosition = 0
 
     private val viewPagerCallBack = object : ViewPager2.OnPageChangeCallback() {
@@ -30,6 +34,12 @@ class TutorialFragment : Fragment(R.layout.fragment_tutorial) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        viewModel.navigateToMap.collectIt(viewLifecycleOwner) {
+            findNavController().navigate(TutorialFragmentDirections.actionTutorialFragmentToMapFragment())
+        }
+        viewModel.onViewCreated()
+
         binding.btnNextStep.setOnClickListener { onBtnClick() }
         binding.pager.apply {
             adapter = ScreenSlidePagerAdapter(requireActivity())

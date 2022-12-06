@@ -2,9 +2,16 @@ package net.alexandroid.where.ui.map
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.view.MenuHost
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
+import androidx.navigation.fragment.findNavController
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -18,7 +25,7 @@ import net.alexandroid.where.ui.binding.FragmentBinding
 import net.alexandroid.where.utils.collectIt
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class MapFragment : Fragment(R.layout.fragment_map), OnMapReadyCallback {
+class MapFragment : Fragment(R.layout.fragment_map), OnMapReadyCallback, MenuProvider {
 
     private val binding by FragmentBinding(FragmentMapBinding::bind)
     private val viewModel: MapViewModel by viewModel()
@@ -35,8 +42,12 @@ class MapFragment : Fragment(R.layout.fragment_map), OnMapReadyCallback {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setupMenu()
         binding.map.getFragment<SupportMapFragment>().getMapAsync(this)
-        viewModel.showCurrentLocation.collectIt(viewLifecycleOwner) { showCurrentLocation() }
+        viewModel.apply {
+            showCurrentLocation.collectIt(viewLifecycleOwner) { showCurrentLocation() }
+            navigateToList.collectIt(viewLifecycleOwner) { findNavController().navigate(MapFragmentDirections.toListFragment()) }
+        }
     }
 
     @SuppressLint("MissingPermission")
@@ -74,5 +85,25 @@ class MapFragment : Fragment(R.layout.fragment_map), OnMapReadyCallback {
                 )
             }
         }
+    }
+
+    // Menu
+    private fun setupMenu() {
+        val menuHost: MenuHost = requireActivity()
+        menuHost.addMenuProvider(this, viewLifecycleOwner, Lifecycle.State.RESUMED)
+    }
+
+    // MenuProvider
+    override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+        menuInflater.inflate(R.menu.menu_map, menu)
+    }
+
+    override fun onMenuItemSelected(menuItem: MenuItem) = when (menuItem.itemId) {
+        R.id.action_list -> {
+            viewModel.onMenuActionListClick()
+            true
+        }
+
+        else -> false
     }
 }

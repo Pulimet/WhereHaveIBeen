@@ -15,6 +15,9 @@ class MapViewModel(private val locationsRepo: LocationsRepo) : ViewModel() {
     private val _showCurrentLocation = MutableSharedFlow<Unit>()
     val showCurrentLocation = _showCurrentLocation.asSharedFlow()
 
+    private val _navigateToList = MutableSharedFlow<Unit>()
+    val navigateToList = _navigateToList.asSharedFlow()
+
     fun onPermissionsResult(
         permissions: Map<String, Boolean>,
         activity: FragmentActivity,
@@ -40,5 +43,9 @@ class MapViewModel(private val locationsRepo: LocationsRepo) : ViewModel() {
         activity: FragmentActivity, requestPermissions: ActivityResultLauncher<Array<String>>
     ) {
         checkPermissionsFlow(activity, requestPermissions)
+    }
+
+    fun onMenuActionListClick() {
+        emitSharedFlow(_navigateToList)
     }
 }

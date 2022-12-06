@@ -44,5 +44,18 @@
         android:id="@+id/listFragment"
         android:name="net.alexandroid.where.ui.list.ListFragment"
         android:label="@string/list_fragment_label"
-        tools:layout="@layout/fragment_list" />
+        tools:layout="@layout/fragment_list">
+        <action
+            android:id="@+id/action_listFragment_to_countryFragment"
+            app:destination="@id/countryFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/countryFragment"
+        android:name="net.alexandroid.where.ui.country.CountryFragment"
+        android:label="fragment_country"
+        tools:layout="@layout/fragment_country" >
+        <argument
+            android:name="country"
+            app:argType="string" />
+    </fragment>
 </navigation>

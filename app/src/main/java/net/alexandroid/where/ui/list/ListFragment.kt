@@ -3,6 +3,7 @@ package net.alexandroid.where.ui.list
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import net.alexandroid.where.R
 import net.alexandroid.where.databinding.FragmentListBinding
@@ -19,8 +20,13 @@ class ListFragment : Fragment(R.layout.fragment_list), OnCountryClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setRecyclerView()
-        viewModel.getLocations().collectIt(viewLifecycleOwner) { list ->
-            countryAdapter?.submitList(list)
+        viewModel.apply {
+            getLocations().collectIt(viewLifecycleOwner) { list ->
+                countryAdapter?.submitList(list)
+            }
+            navigateToDetails.collectIt(viewLifecycleOwner) {
+                findNavController().navigate(ListFragmentDirections.actionListFragmentToCountryFragment(it))
+            }
         }
     }
 
@@ -34,6 +40,6 @@ class ListFragment : Fragment(R.layout.fragment_list), OnCountryClickListener {
 
     // OnCountryClickListener
     override fun onClick(country: String) {
-        // TODO Open fragment with country details
+        viewModel.onCountryClick(country)
     }
 }

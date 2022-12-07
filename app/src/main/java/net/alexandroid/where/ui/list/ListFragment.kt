@@ -3,18 +3,18 @@ package net.alexandroid.where.ui.list
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import net.alexandroid.where.R
 import net.alexandroid.where.databinding.FragmentListBinding
 import net.alexandroid.where.ui.binding.FragmentBinding
 import net.alexandroid.where.utils.collectIt
-import org.koin.android.ext.android.inject
 
 class ListFragment : Fragment(R.layout.fragment_list), OnCountryClickListener {
 
     private val binding by FragmentBinding(FragmentListBinding::bind)
-    private val viewModel: ListViewModel by inject()
+    private val viewModel: ListViewModel by viewModel()
     private var countryAdapter: CountryAdapter? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

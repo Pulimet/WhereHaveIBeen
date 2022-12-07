@@ -7,6 +7,8 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
 object NetworkObjectsCreator {
+
+    const val GOOGLE_SERACH_BASE_URL = "https://www.googleapis.com/"
     fun createOkHttpClient(logger: HttpLoggingInterceptor.Logger) = OkHttpClient.Builder()
         .connectTimeout(5L, TimeUnit.SECONDS)
         .readTimeout(10L, TimeUnit.SECONDS)

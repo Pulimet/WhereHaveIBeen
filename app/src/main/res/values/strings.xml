@@ -34,4 +34,6 @@
     </string>
     <string name="desc_icon">Icon</string>
     <string name="btn_upload">Upload ZIP file and we will start getting your locations soon.</string>
+    <string name="country_details">Country Details</string>
+    <string name="search_failed">Failed to get country information</string>
 </resources>

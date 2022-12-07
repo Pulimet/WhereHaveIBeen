@@ -52,7 +52,7 @@
     <fragment
         android:id="@+id/countryFragment"
         android:name="net.alexandroid.where.ui.country.CountryFragment"
-        android:label="fragment_country"
+        android:label="@string/country_details"
         tools:layout="@layout/fragment_country" >
         <argument
             android:name="country"
